@@ -1,4 +1,12 @@
 import random
+import time
+import sys
+def print_delay(text,delay=0.02):
+    for char in text:
+        print (char,end="",flush=True)
+        time.sleep(delay)
+    print('\n',end="")
+
 class talia: #talia w grze
     def __init__(self, karty):
         self.karty = karty
@@ -19,20 +27,23 @@ class reka:#karty na rece gracza
         self.karty.append(nowa_karta)
 
     def wybor(self,karta=1000):
-        print ("Twoje karty: "+ str(self.karty))
+        print_delay ("Twoje karty: "+ str(self.karty),0.01)
         #karta=1000           
         while karta not in range(len(self.karty)):
-            karta = input("Wybierz kartę 1-" + str(len(self.karty))+": ")
+            karta = input("Wybierz kartę (1-" + str(len(self.karty))+") lub dobierz (0): ")
             karta = int(karta)
+            if karta==0:
+                print_delay("dobierasz kartę")
+                return 0
             karta -=1
-            print('wybrales: '+str(self.karty[int(karta)]))
+            print_delay('wybrales: '+str(self.karty[int(karta)]))
         return self.karty[karta]
 
     def usun(self,usun):
         self.karty.remove(usun)
 
     def wyswietl(self):
-        print (self.karty)
+        print_delay (self.karty)
 
 class stos: #stos zagranych kart 
     def __init__(self, karty):
@@ -75,25 +86,34 @@ for x in range(5):
     
 stos_kart = stos([])
 stos_kart.dodanie(talia_uzyta.losowanie())
-print ("Karta na stole to: " + stos_kart.karty[-1])
+#print ("Karta na stole to: " + stos_kart.karty[-1])
 #gracz1.wyswietl()
 #gracz2.wyswietl()
 #talia_uzyta.wyswietl()
 
     #ROZGRYWKA WŁAŚCIWA
-        
-if len(gracz1.karty) > 0 or len(gracz2.karty) > 0: #WARUNKI ZAKOŃCZENIA GRY
-    print ('gramy dalej')
-    x,y = stos_kart.karty[-1].split(' ')
-    a,b = [' ',' ']
-    while x != a and y != b: #SPRAWDZENIE CZY KARTA PASUJE DO TEJ NA STOSIE
-        rzucona_karta = gracz1.wybor()
-        a,b = rzucona_karta.split(' ')
-        if x != a and y != b:
-            print("Nie możesz rzucić tej karty!")
-        else:
-            pass
-    gracz1.usun(rzucona_karta)
-    gracz1.wyswietl()
-    stos_kart.dodanie(rzucona_karta)
-    stos_kart.wyswietl()
+tura=0
+while len(gracz1.karty) > 0 or len(gracz2.karty) > 0:
+    tura+=1 #WARUNKI ZAKOŃCZENIA GRY
+    print_delay ('\ngramy dalej')
+    print_delay ("Karta na stole to: " + stos_kart.karty[-1])
+    rzucona_karta = gracz1.wybor()
+    def rzucanie_karty(rzucona_karta):
+        x,y = stos_kart.karty[-1].split(' ')
+        a,b = [' ',' ']
+        while x != a and y != b: #SPRAWDZENIE CZY KARTA PASUJE DO TEJ NA STOSIE
+            a,b = rzucona_karta.split(' ')
+            if x != a and y != b:
+                print_delay("Nie możesz rzucić tej karty!")
+                rzucona_karta = gracz1.wybor()
+            else:
+                pass
+        gracz1.usun(rzucona_karta)
+        #gracz1.wyswietl()
+        stos_kart.dodanie(rzucona_karta)
+        #stos_kart.wyswietl()
+    if rzucona_karta!=0:
+        rzucanie_karty(rzucona_karta)
+    else:
+        print_delay("dobieraniekarty.exe")
+print_delay ("WYYGRAŁEŚ! Skonczyłeś grę w "+str(tura)+" turach",0.05)
