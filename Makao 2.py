@@ -51,6 +51,29 @@ class reka:#karty na rece gracza
             except ValueError:
                 print_delay("\nWpisz cyfrę")
         return self.karty[karta]
+    
+    def auto_wybor(self,karta=1000):
+        zakres = len(self.karty)
+        #print(zakres)
+        print_delay ("Karty PC: "+ str(len(self.karty)),0.005)#+ str(self.karty)
+        karta = int(zakres)
+
+        x,y = stos_kart.karty[-1].split(' ')
+        a,b = [' ',' ']
+        while x != a and y != b:  
+            karta += -1
+            #print("test karty"+str(karta))
+            #print(karta)
+            rzucona_karta=self.karty[karta]
+            a,b = rzucona_karta.split(' ')
+            #print(a+b)
+            if karta==0:
+                print_delay("PC dobiera kartę")
+                return 0
+            else:
+                pass
+        print_delay('PC wybrał: '+str(self.karty[int(karta)]))
+        return self.karty[karta]
 
     def usun(self,usun):
         self.karty.remove(usun)
@@ -95,7 +118,7 @@ gracz2 = reka([])
 
 for x in range(5):
     gracz1.dobierz(talia_uzyta.losowanie())
-    #gracz2.dobierz(talia_uzyta.losowanie())
+    gracz2.dobierz(talia_uzyta.losowanie())
     
 stos_kart = stos([])
 stos_kart.dodanie(talia_uzyta.losowanie())
@@ -124,23 +147,33 @@ def rzucanie_karty(rzucona_karta):
         gracz1.dobierz(talia_uzyta.losowanie())
 
 def tura_PC(rzucona_karta):
-    pass
+    if rzucona_karta!=0:
+        gracz2.usun(rzucona_karta)
+        stos_kart.dodanie(rzucona_karta)
+    else:
+        gracz2.dobierz(talia_uzyta.losowanie())
 
 
 tura=0
-while len(gracz1.karty) > 0 or len(gracz2.karty) > 0: #WARUNKI ZAKOŃCZENIA GRY
+while len(gracz1.karty) > 0 and len(gracz2.karty) > 0: #WARUNKI ZAKOŃCZENIA GRY
     tura+=1 
-    print(talia_uzyta.policz())
-    if talia_uzyta.policz()==0:
-        print (stos_kart.karty)
+    #print(talia_uzyta.policz())
+    if talia_uzyta.policz()==0: #sprawdzanie czy talia jest niepusta 
+        #print (stos_kart.karty)
         talia_uzyta = talia(stos_kart.karty)
         stos_kart=stos([talia_uzyta.karty[-1]])
         talia_uzyta.usun(talia_uzyta.karty[-1])
-        print (talia_uzyta.karty)
+        #print (talia_uzyta.karty)
     
     print_delay ('\ngramy dalej')
     print_delay ("Karta na stole to: " + stos_kart.karty[-1])
     rzucanie_karty(gracz1.wybor())
+    if len(gracz1.karty)==0:
+        print_delay ("\n------WYYGRAŁEŚ!------\nSkonczyłeś grę w "+str(tura)+" turach\n------GRATULACJE------",0.1)
+        break
+    tura_PC(gracz2.auto_wybor())
+    if len(gracz2.karty)==0:
+        print_delay ("\n------PC WYGRAŁ------\nSkonczyłeś grę w "+str(tura)+" turach\n-------------------",0.1)
+        break
 
-print_delay ("\n------WYYGRAŁEŚ!------\nSkonczyłeś grę w "+str(tura)+" turach\n------GRATULACJE------",0.1)
 
