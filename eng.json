@@ -1,0 +1,22 @@
+{
+    "menu": "---------MENU---------\n\n *START GAME* (1)\n \n *GAME RULES* (2)\n \n *LANGUAGES* (3)",
+    "menu_nav": "\nEnter a number 1-3: ",
+    "lan_nav": "Enter a number 1-2: ",
+    "rules": "--------RULES--------\n\nSoon you will play a simplified version of the game Makao.\nYour goal is to get rid of all your cards.\nThe card you play must match the card on the table in such a way that it is the same figure or the same color.\nYou can only play one card.\nGood luck.\n\n *START GAME* (1)\n\n *MENU* (2)\n",
+    "languages":"------LANGUAGES-------\n\n *POLISH* (1)\n \n *ENGLISH* (2)\n",
+    "pc_cards": "PC Cards: ",
+    "pc_draws": "PC draws a card",
+    "pc_choice": "PC chose: ",
+    "index_error": "\nYou don't have that many cards",
+    "value_error": "\nEnter a number",
+    "your_choice": "You choose: ",
+    "you_draw": "You draw a card",
+    "your_cards": "Your cards: ",
+    "you_choose": "Choose a card (1-{}) or draw (0): ",
+    "wrong_card": "\nYou can't play that card!",
+    "current_card": "The card on the table is: ",
+    "win_credits": "\n------YOU WON!------\nYou finished the game in {} rounds\n------CONGRATULATIONS------",
+    "loose_credits": "\n------PC WON------\nYou finished the game in {} rounds\n-------------------",
+    "figures": ["two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "jack", "queen", "king", "ace"],
+    "colors": ["spade", "club", "diamond", "heart"]
+}

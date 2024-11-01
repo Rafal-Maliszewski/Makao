@@ -1,5 +1,16 @@
 import random
 import time
+import json
+import os
+
+def load_language(filename):
+    current_folder = os.path.dirname(os.path.abspath(__file__))
+    file_path = os.path.join(current_folder, f'{filename}.json')
+    with open(file_path, 'r', encoding='utf-8') as file:
+        return json.load(file)
+language = load_language("eng")
+def txt(key):
+    return language.get(key,key)
 
 def print_delay(text,delay=0.01):
     for char in text:
@@ -34,26 +45,25 @@ class reka:#karty na rece gracza
 
     def wybor(self,karta=1000):           
         while karta not in range(len(self.karty)):
-            print_delay ("Twoje karty: "+ str(self.karty),0.005)
-            karta = input("Wybierz kartę (1-" + str(len(self.karty))+") lub dobierz (0): ")
+            print_delay (f"{txt('your_cards')}"+ str(self.karty),0.005)
+            karta = input(f"{txt('you_choose').format(len(self.karty))}")
             try:
                 karta = int(karta)
-                #print ("id "+str(karta))
                 if karta==0:
-                    print_delay("dobierasz kartę")
+                    print_delay(f"{txt('you_draw')}")
                     return 0
                 karta -=1
                 try:
-                    print_delay('wybrales: '+str(self.karty[int(karta)]))
+                    print_delay(f"{txt('your_choice')}"+str(self.karty[int(karta)]))
                 except IndexError:
-                    print_delay("\nNie masz tylu kart")
+                    print_delay(f"{txt('index_error')}")
             except ValueError:
-                print_delay("\nWpisz cyfrę")
+                print_delay(f"{txt('value_error')}")
         return self.karty[karta]
     
     def auto_wybor(self,karta=1000):
         zakres = len(self.karty)
-        print_delay ("Karty PC: "+ str(len(self.karty)),0.005)
+        print_delay (f"{txt('pc_cards')}"+ str(len(self.karty)),0.005)
         karta = int(zakres)
 
         x,y = stos_kart.karty[-1].split(' ')
@@ -63,11 +73,11 @@ class reka:#karty na rece gracza
             rzucona_karta=self.karty[karta]
             a,b = rzucona_karta.split(' ')
             if karta==0:
-                print_delay("PC dobiera kartę")
+                print_delay(f"{txt('pc_draws')}")
                 return 0
             else:
                 pass
-        print_delay('PC wybrał: '+str(self.karty[int(karta)]))
+        print_delay(f"{txt('pc_choice')}"+str(self.karty[int(karta)]))
         return self.karty[karta]
 
     def usun(self,usun):
@@ -92,27 +102,46 @@ class stos: #stos zagranych kart
 
 #MECHANIKI MENU
 def menu():
-    print_delay("---------MENU---------\n")
-    print_delay(" *ROZPOCZNIJ GRĘ* (1))\n \n  *ZASADY GRY* (2)\n")
+    print_delay(f"{txt('menu')}")
     nawiguj = 0
-    while nawiguj not in (1,2):
-        nawiguj=int(input("Wpisz cyfrę 1-2: "))
+    while nawiguj not in (1,2,3):
+        try:
+            nawiguj=int(input(f"{txt('menu_nav')}"))
+        except ValueError:
+            pass
     return nawiguj
 
 def zasady():
-    print_delay("Za chwilę zagrasz w uproszczoną wersję gry Makao.\nTwoim celem jest pozbycie sie wszystkich kart.\n\
-Karta która rzucisz musi pasować do karty na stole tak aby była to taka sama figura lub taki sam kolor.\n\
-Możesz rzucić tylko jedną kartę.\nPowodzenia.\n\
-\n *ROZPOCZNIJ GRĘ* (1)\n\n\
-     *MENU* (2)\n")
+    print_delay(f"{txt('rules')}")
     nawiguj = 0
     while nawiguj not in (1,2):
-        nawiguj = int(input("Wpisz cyfrę 1-2: "))
+        try:
+            nawiguj = int(input(f"{txt('menu_nav')}"))
+        except ValueError:
+            pass
     return nawiguj
+
+def jezyk():
+    print_delay(f"{txt('languages')}")
+    nawiguj = 0
+    global language
+    while nawiguj not in (1,2):
+        try:
+            nawiguj = int(input(f"{txt('lan_nav')}"))
+        except ValueError:
+            pass
+    if nawiguj==1:
+        language=load_language('pl')
+    elif nawiguj==2:
+        language=load_language('eng')
+    return language
 
 def nawigacja():
     nawiguj = menu()
-    if nawiguj==2:
+    if nawiguj==3:
+        jezyk()
+        nawigacja()
+    elif nawiguj==2:
         nawiguj = zasady()
         if nawiguj==2:
             nawigacja()
@@ -125,8 +154,8 @@ def nawigacja():
 nawigacja()
 #ROZGRYWKA
     #PRYGOTOWANIE TALII
-figury=['dwójka','trójka','czwórka','piątka','szóstka','siódemka','ósemka','dziewiątka','dziesiątka','walet','dama','król','as']
-kolory=['pik','trefl','karo','kier']
+figury=txt('figures')
+kolory=txt('colors')
 talia_bazowa=[]
 for figura in figury:
     for kolor in kolory:
@@ -153,13 +182,12 @@ def tura_gracza(rzucona_karta):
         if x != a and y != b: #SPRAWDZENIE CZY KARTA PASUJE DO TEJ NA STOSIE
             a,b = rzucona_karta.split(' ')
             if x != a and y != b:
-                print_delay("\nNie możesz rzucić tej karty!")
+                print_delay(f"{txt('wrong_card')}")
                 tura_gracza(rzucona_karta = gracz1.wybor())
             else:
                 gracz1.usun(rzucona_karta)
                 stos_kart.dodanie(rzucona_karta)
     else:
-        print_delay("dobieraniekarty.exe")
         gracz1.dobierz(talia_uzyta.losowanie())
 
 def tura_PC(rzucona_karta):
@@ -177,15 +205,14 @@ while len(gracz1.karty) > 0 and len(gracz2.karty) > 0: #WARUNKI ZAKOŃCZENIA GRY
         stos_kart=stos([talia_uzyta.karty[-1]])
         talia_uzyta.usun(talia_uzyta.karty[-1])
     
-    print_delay ('\ngramy dalej')
-    print_delay ("Karta na stole to: " + stos_kart.karty[-1])
+    print_delay (f"{txt('current_card')}" + stos_kart.karty[-1])
     tura_gracza(gracz1.wybor())
     if len(gracz1.karty)==0:
-        print_delay ("\n------WYYGRAŁEŚ!------\nSkonczyłeś grę w "+str(tura)+" turach\n------GRATULACJE------",0.1)
+        print_delay (f"{txt('win_credits').format(str(tura))}",0.1)
         break
     tura_PC(gracz2.auto_wybor())
     if len(gracz2.karty)==0:
-        print_delay ("\n------PC WYGRAŁ------\nSkonczyłeś grę w "+str(tura)+" turach\n-------------------",0.1)
+        print_delay (f"{txt('loose_credits').format(str(tura))}",0.1)
         break
 
 

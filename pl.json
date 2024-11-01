@@ -1,0 +1,22 @@
+{
+    "menu":"---------MENU---------\n\n *ROZPOCZNIJ GRĘ* (1)\n \n  *ZASADY GRY* (2)\n \n   *JĘZYKI* (3)",
+    "menu_nav":"\nWpisz cyfrę 1-3: ",
+    "lan_nav":"Wpisz cyfrę 1-2: ",
+    "rules":"--------ZASADY--------\n\nZa chwilę zagrasz w uproszczoną wersję gry Makao.\nTwoim celem jest pozbycie się wszystkich kart.\nKarta która rzucisz musi pasować do karty na stole tak aby była to taka sama figura lub taki sam kolor.\nMożesz rzucić tylko jedną kartę.\nPowodzenia.\n\n *ROZPOCZNIJ GRĘ* (1)\n\n *MENU* (2)\n",
+    "languages":"------JĘZYKI-------\n\n *POLSKI* (1)\n \n *ANGIELSKI* (2)\n",
+    "pc_cards":"Karty PC: ",
+    "pc_draws":"PC dobiera kartę",
+    "pc_choice":"PC wybrał: ",
+    "index_error":"\nNie masz tylu kart",
+    "value_error":"\nWpisz cyfrę",
+    "your_choice":"Wybierasz: ",
+    "you_draw":"Dobierasz kartę",
+    "your_cards":"Twoje karty: ",
+    "you_choose":"Wybierz kartę (1-{}) lub dobierz (0): ",
+    "wrong_card":"\nNie możesz rzucić tej karty!",
+    "current_card":"Karta na stole to: ",
+    "win_credits":"\n------WYYGRAŁEŚ!------\nSkonczyłeś grę w {} turach\n------GRATULACJE------",
+    "loose_credits":"\n------PC WYGRAŁ------\nSkonczyłeś grę w {} turach\n-------------------",
+    "figures":["dwójka","trójka","czwórka","piątka","szóstka","siódemka","ósemka","dziewiątka","dziesiątka","walet","dama","król","as"],
+    "colors":["pik","trefl","karo","kier"]
+}
